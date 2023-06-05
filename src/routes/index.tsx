@@ -8,7 +8,8 @@ import { KVNamespace } from "@cloudflare/workers-types";
 
 export const useCourses = routeLoader$(async ({ platform }) => {
   const { ADMINS } = platform as unknown as { ADMINS: KVNamespace };
-  const admins = (await ADMINS.list()).keys;
+  const adminsRes = await ADMINS.list();
+  const admins = Object.values(adminsRes);
   return {
     admins,
   };
@@ -39,7 +40,7 @@ export default component$(() => {
 
   const submit = $(async () => {
     try {
-      console.log(admins.value);
+      console.log(admins.value.admins);
       if (firstName.value === "")
         firstNameError.value = "لطفا نام خود را وارد کنید";
       else if (!/^[\u0600-\u06FF\s]+$/.test(firstName.value))
