@@ -47,6 +47,7 @@ export default component$(() => {
   const sexError = useSignal("");
   const phoneNumberError = useSignal("");
   const studentIdError = useSignal("");
+  const course = useSignal("");
   const loading = useSignal(false);
   const courses = useCourses();
   const addStudent = useAddStudent();
@@ -76,11 +77,12 @@ export default component$(() => {
       if (studentId.value.length < 8 || studentId.value.length > 16)
         studentIdError.value = "شماره دانشجویی وارد شده معتبر نیست";
       const res = await addStudent.submit({
-        firstName,
-        lastName,
-        sex,
-        phoneNumber,
-        studentId,
+        firstName: firstName.value,
+        lastName: lastName.value,
+        sex: sex.value,
+        phoneNumber: phoneNumber.value,
+        studentId: studentId.value,
+        couuse: course.value,
       });
       console.log(res);
     } catch (error) {
@@ -228,9 +230,14 @@ export default component$(() => {
                 <span class="text-red-500 pr-1">*</span>
                 نام دوره
               </label>
-              <select name="couses" id="courses">
+              <select
+                bind:value={course}
+                name="couses"
+                id="courses"
+                class="focus:border-[#0e8af2] focus:border-2 border-[#9a9a9a] border-[1px] rounded px-4 py-3"
+              >
                 {courses.value.courses.map((c) => (
-                  <option>{c.name}</option>
+                  <option value={c.name}>{c.name}</option>
                 ))}
               </select>
               {studentIdError.value && (
@@ -240,10 +247,11 @@ export default component$(() => {
               )}
             </div>
             <button
+              disabled={loading.value}
               onClick$={submit}
               class="bg-[#0e8af2] mb-8 h-12 rounded-lg text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9] w-full"
             >
-              ثبت نام
+              {loading.value && "در حال"}ثبت نام
             </button>
           </div>
         </div>
