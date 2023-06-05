@@ -1,7 +1,7 @@
 import { component$, useSignal, $ } from "@builder.io/qwik";
 import {
   DocumentHead,
-  routeAction$,
+  // routeAction$,
   routeLoader$,
 } from "@builder.io/qwik-city";
 import { KVNamespace } from "@cloudflare/workers-types";
@@ -14,11 +14,11 @@ export const useCourses = routeLoader$(async ({ platform }) => {
   return { courses: courses.keys };
 });
 
-export const useAddUser = routeAction$(async (data, { platform }) => {
-  return {
-    ok: true,
-  };
-});
+// export const useAddUser = routeAction$(async (data, { platform }) => {
+//   return {
+//     ok: true,
+//   };
+// });
 
 export default component$(() => {
   const firstName = useSignal("");
