@@ -1,17 +1,18 @@
-import { component$, useSignal, $ } from "@builder.io/qwik";
+import { component$, useSignal, $, useVisibleTask$ } from "@builder.io/qwik";
 import {
   DocumentHead,
   routeAction$,
   routeLoader$,
 } from "@builder.io/qwik-city";
-import { KVNamespace } from "@cloudflare/workers-types";
+// import { KVNamespace } from "@cloudflare/workers-types";
 
 export const useCourses = routeLoader$(async ({ platform }) => {
-  const { ADMINS } = platform as unknown as { ADMINS: KVNamespace };
-  const adminsRes = await ADMINS.list();
-  const admins = Object.values(adminsRes);
+  // const { ADMINS } = platform as unknown as { ADMINS: KVNamespace };
+  // const adminsRes = await ADMINS.list();
+  // const admins = Object.values(adminsRes);
+  const env = platform.env;
   return {
-    admins,
+    env,
   };
 });
 
@@ -36,11 +37,15 @@ export default component$(() => {
   const sexError = useSignal("");
   const phoneNumberError = useSignal("");
   const studentIdError = useSignal("");
-  const admins = useCourses();
+
+  const courses = useCourses()
+
+  useVisibleTask$(()=>{
+    console.log(courses.value)
+  })
 
   const submit = $(async () => {
     try {
-      console.log(admins.value.admins);
       if (firstName.value === "")
         firstNameError.value = "لطفا نام خود را وارد کنید";
       else if (!/^[\u0600-\u06FF\s]+$/.test(firstName.value))
