@@ -1,25 +1,24 @@
 import { component$, useSignal, $ } from "@builder.io/qwik";
-import { DocumentHead, routeLoader$ } from "@builder.io/qwik-city";
+import {
+  DocumentHead,
+  routeAction$,
+  routeLoader$,
+} from "@builder.io/qwik-city";
 import { KVNamespace } from "@cloudflare/workers-types";
 
 export const useCourses = routeLoader$(async ({ platform }) => {
-  const { ADMINS } = platform.env as {
-    ADMINS: KVNamespace;
+  const { COURSES } = platform.env as {
     COURSES: KVNamespace;
-    STUDENTS: KVNamespace;
   };
-  const admins = await ADMINS.get("alirezasn");
-  return { admins };
+  const courses = await COURSES.list();
+  return { courses: courses.keys };
 });
 
-// export const useAddUser = routeAction$(async (data, { platform }) => {
-// const students = await platform.env.STUDENTS.list();
-// console.log(platform.env);
-// return {
-// ok: true,
-// students,
-// };
-// });
+export const useAddUser = routeAction$(async (data, { platform }) => {
+  return {
+    ok: true,
+  };
+});
 
 export default component$(() => {
   const firstName = useSignal("");
@@ -36,7 +35,6 @@ export default component$(() => {
   const courses = useCourses();
 
   const submit = $(async () => {
-    console.log(courses.value);
     // try {
     //   if (firstName.value === "")
     //     firstNameError.value = "لطفا نام خود را وارد کنید";
@@ -199,6 +197,22 @@ export default component$(() => {
                     : "border-[#9a9a9a] border-[1px]"
                 } rounded px-4 py-3 ss02 focus:outline-[#0e8af2]`}
               />
+              {studentIdError.value && (
+                <div class="text-red-500 text-[12px] pt-2">
+                  {studentIdError.value}
+                </div>
+              )}
+            </div>
+            <div class="flex flex-col mb-8">
+              <label for="courses" class="mb-4 text-[#2b2b2b] text-[16px]">
+                <span class="text-red-500 pr-1">*</span>
+                نام دوره
+              </label>
+              <select name="couses" id="courses">
+                {courses.value.courses.map((c) => (
+                  <option>{c.name}</option>
+                ))}
+              </select>
               {studentIdError.value && (
                 <div class="text-red-500 text-[12px] pt-2">
                   {studentIdError.value}
