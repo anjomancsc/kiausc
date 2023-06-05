@@ -234,7 +234,7 @@ export default component$(() => {
                 bind:value={course}
                 name="couses"
                 id="courses"
-                class="focus:border-[#0e8af2] focus:border-2 border-[#9a9a9a] border-[1px] rounded px-4 py-3"
+                class="text-right focus:border-[#0e8af2] focus:border-2 border-[#9a9a9a] border-[1px] rounded px-4 py-3"
               >
                 {courses.value.courses.map((c) => (
                   <option value={c.name}>{c.name}</option>
@@ -251,7 +251,7 @@ export default component$(() => {
               onClick$={submit}
               class="bg-[#0e8af2] mb-8 h-12 rounded-lg text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9] w-full"
             >
-              {loading.value && "در حال"}ثبت نام
+              {loading.value && "در حال "}ثبت نام
             </button>
           </div>
         </div>
