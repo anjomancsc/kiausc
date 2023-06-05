@@ -1,19 +1,15 @@
 import { component$, useSignal, $ } from "@builder.io/qwik";
-import {
-  DocumentHead,
-  // routeAction$,
-  routeLoader$,
-} from "@builder.io/qwik-city";
-// import { KVNamespace } from "@cloudflare/workers-types";
+import { DocumentHead, routeLoader$ } from "@builder.io/qwik-city";
+import { KVNamespace } from "@cloudflare/workers-types";
 
 export const useCourses = routeLoader$(async ({ platform }) => {
-  // const { ADMINS } = platform as unknown as { ADMINS: KVNamespace };
-  // const adminsRes = await ADMINS.list();
-  // const admins = Object.values(adminsRes);
-  const courses: string | null = platform.env.COURSES.get("test");
-  return {
-    courses,
+  const { ADMINS } = platform.env as {
+    ADMINS: KVNamespace;
+    COURSES: KVNamespace;
+    STUDENTS: KVNamespace;
   };
+  const admins = await ADMINS.get("alirezasn");
+  return { admins };
 });
 
 // export const useAddUser = routeAction$(async (data, { platform }) => {
