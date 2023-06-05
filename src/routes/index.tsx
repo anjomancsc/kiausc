@@ -35,6 +35,7 @@ export default component$(() => {
   const courses = useCourses();
 
   const submit = $(async () => {
+    console.log(courses.value);
     // try {
     //   if (firstName.value === "")
     //     firstNameError.value = "لطفا نام خود را وارد کنید";
