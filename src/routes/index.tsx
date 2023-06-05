@@ -1,7 +1,7 @@
 import { component$, useSignal, $, useVisibleTask$ } from "@builder.io/qwik";
 import {
   DocumentHead,
-  routeAction$,
+  // routeAction$,
   routeLoader$,
 } from "@builder.io/qwik-city";
 // import { KVNamespace } from "@cloudflare/workers-types";
@@ -10,23 +10,22 @@ export const useCourses = routeLoader$(async ({ platform }) => {
   // const { ADMINS } = platform as unknown as { ADMINS: KVNamespace };
   // const adminsRes = await ADMINS.list();
   // const admins = Object.values(adminsRes);
-  const env = platform.env;
+  const courses: string | null = platform.env.COURSES.get("test");
   return {
-    env,
+    courses,
   };
 });
 
-export const useAddUser = routeAction$(async (data, { platform }) => {
-  // const students = await platform.env.STUDENTS.list();
-  console.log(platform.env);
-  return {
-    ok: true,
-    // students,
-  };
-});
+// export const useAddUser = routeAction$(async (data, { platform }) => {
+// const students = await platform.env.STUDENTS.list();
+// console.log(platform.env);
+// return {
+// ok: true,
+// students,
+// };
+// });
 
 export default component$(() => {
-  const action = useAddUser();
   const firstName = useSignal("");
   const lastName = useSignal("");
   const sex = useSignal("");
@@ -38,47 +37,43 @@ export default component$(() => {
   const phoneNumberError = useSignal("");
   const studentIdError = useSignal("");
 
-  const courses = useCourses()
-
-  useVisibleTask$(()=>{
-    console.log(courses.value)
-  })
+  const courses = useCourses();
 
   const submit = $(async () => {
-    try {
-      if (firstName.value === "")
-        firstNameError.value = "لطفا نام خود را وارد کنید";
-      else if (!/^[\u0600-\u06FF\s]+$/.test(firstName.value))
-        firstNameError.value = "لطفا نام خود را به فارسی وارد کنید";
-      else if (firstName.value.length < 3)
-        firstNameError.value = "نام خانوادگی وارد شده کوتاه است";
-      if (lastName.value === "")
-        lastNameError.value = "لطفا نام خانوادگی خود را وارد کنید";
-      else if (!/^[\u0600-\u06FF\s]+$/.test(lastName.value))
-        lastNameError.value = "لطفا نام خانوادگی خود را به فارسی وارد کنید";
-      else if (lastName.value.length < 3)
-        lastNameError.value = "نام خانوادگی وارد شده کوتاه است";
-      if (sex.value === "") sexError.value = "لطفا جنسیت خود را انتخاب کنید";
-      if (
-        phoneNumber.value.length != 11 ||
-        phoneNumber.value[0] != "0" ||
-        phoneNumber.value[1] != "9"
-      )
-        phoneNumberError.value = "شماره موبایل وارد شده معتبر نیست";
-      if (studentId.value.length < 8 || studentId.value.length > 16)
-        studentIdError.value = "شماره دانشجویی وارد شده معتبر نیست";
-
-      const res = await action.submit({
-        firstName,
-        lastName,
-        sex,
-        phoneNumber,
-        studentId,
-      });
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(courses.value);
+    // try {
+    //   if (firstName.value === "")
+    //     firstNameError.value = "لطفا نام خود را وارد کنید";
+    //   else if (!/^[\u0600-\u06FF\s]+$/.test(firstName.value))
+    //     firstNameError.value = "لطفا نام خود را به فارسی وارد کنید";
+    //   else if (firstName.value.length < 3)
+    //     firstNameError.value = "نام خانوادگی وارد شده کوتاه است";
+    //   if (lastName.value === "")
+    //     lastNameError.value = "لطفا نام خانوادگی خود را وارد کنید";
+    //   else if (!/^[\u0600-\u06FF\s]+$/.test(lastName.value))
+    //     lastNameError.value = "لطفا نام خانوادگی خود را به فارسی وارد کنید";
+    //   else if (lastName.value.length < 3)
+    //     lastNameError.value = "نام خانوادگی وارد شده کوتاه است";
+    //   if (sex.value === "") sexError.value = "لطفا جنسیت خود را انتخاب کنید";
+    //   if (
+    //     phoneNumber.value.length != 11 ||
+    //     phoneNumber.value[0] != "0" ||
+    //     phoneNumber.value[1] != "9"
+    //   )
+    //     phoneNumberError.value = "شماره موبایل وارد شده معتبر نیست";
+    //   if (studentId.value.length < 8 || studentId.value.length > 16)
+    //     studentIdError.value = "شماره دانشجویی وارد شده معتبر نیست";
+    //   const res = await action.submit({
+    //     firstName,
+    //     lastName,
+    //     sex,
+    //     phoneNumber,
+    //     studentId,
+    //   });
+    //   console.log(res);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   });
 
   return (
