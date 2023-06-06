@@ -107,7 +107,7 @@ export default component$(() => {
         />
       </div>
       <div class="col-span-1 max-md:hidden" />
-      <div class="col-span-5 max-md:col-span-12 flex flex-col justify-between py-8 overflow-y-scroll overflow-x-hidden pr-[120px]">
+      <div class="col-span-5 max-md:col-span-12 flex flex-col justify-between py-8 md:overflow-y-scroll overflow-x-hidden md:pr-[120px]">
         <div class="mt-auto flex flex-col justify-center w-full text-right">
           <div class="text-[#222222] text-[24px] mb-4 font-bold">ثبت نام</div>
           <div class="text-[#707070] text-[12px] mb-10">
