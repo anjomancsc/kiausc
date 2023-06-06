@@ -123,7 +123,7 @@ export default component$(() => {
         sex: sex.value,
         phoneNumber: phoneNumber.value,
         studentId: studentId.value,
-        couuse: course.value,
+        course: course.value,
       });
       console.log(res.value);
       if (res.value.ok) submitResponse.value = "ثبت نام با موفقیت انجام شد";
@@ -310,12 +310,12 @@ export default component$(() => {
                 ثبت نام
               </button>
               {submitError.value && (
-                <span class="text-red-500 pt-4">
+                <span class="text-red-500 mt-2 text-[12px]">
                   {submitError.value}
                 </span>
               )}
               {submitResponse.value && (
-                <span class="text-green-500 pt-4">
+                <span class="text-green-500 mt-2 text-[12px]">
                   {submitResponse.value}
                 </span>
               )}
