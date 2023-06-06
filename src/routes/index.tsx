@@ -91,7 +91,7 @@ export default component$(() => {
       else if (!/^[\u0600-\u06FF\s]+$/.test(firstName.value))
         firstNameError.value = "نام خود را به فارسی وارد کنید";
       else if (firstName.value.length < 3)
-        firstNameError.value = "نام خانوادگی وارد شده کوتاه است";
+        firstNameError.value = "نام وارد شده کوتاه است";
       else firstNameError.value = "";
       if (lastName.value === "")
         lastNameError.value = "نام خانوادگی خود را وارد کنید";
@@ -102,14 +102,18 @@ export default component$(() => {
       else lastNameError.value = "";
       if (sex.value === "") sexError.value = "جنسیت خود را انتخاب کنید";
       else sexError.value = "";
-      if (
+      if (phoneNumber.value.length === 0)
+        phoneNumberError.value = "شماره موبایل خود را وارد کنید";
+      else if (
         phoneNumber.value.length != 11 ||
         phoneNumber.value[0] != "0" ||
         phoneNumber.value[1] != "9"
       )
         phoneNumberError.value = "شماره موبایل وارد شده معتبر نیست";
       else phoneNumberError.value = "";
-      if (studentId.value.length < 8 || studentId.value.length > 16)
+      if (studentId.value.length === 0)
+        studentIdError.value = "شماره دانشجویی خود را وارد کنید";
+      else if (studentId.value.length < 8 || studentId.value.length > 18)
         studentIdError.value = "شماره دانشجویی وارد شده معتبر نیست";
       else studentIdError.value = "";
       if (course.value === "") courseError.value = "نام دوره را انتخاب کنید";
