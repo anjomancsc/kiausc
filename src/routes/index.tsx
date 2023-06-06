@@ -15,39 +15,46 @@ export const useCourses = routeLoader$(async ({ platform }) => {
     return { courses: courses.keys };
   } else {
     return {
-      courses: [],
+      courses: [{ name: "تست" }],
     };
   }
 });
 
 export const useAddStudent = routeAction$(async (data, { platform }) => {
-  const { STUDENTS } = platform.env as {
-    STUDENTS: KVNamespace;
-  };
-  const student = await STUDENTS.get(String(data.studentId));
-  if (student) {
-    const studentData = JSON.parse(student);
-    if (studentData.courses.includes(data.course))
-      return {
-        ok: false,
-        message: "شما قبلا در این دوره ثبت نام کرده اید",
-      };
-    else {
-      delete data.course;
-      await STUDENTS.put(
-        String(data.studentId),
-        JSON.stringify({
-          ...data,
-          course: [...studentData.courses, data.couse],
-        })
-      );
+  try {
+    const { STUDENTS } = platform.env as {
+      STUDENTS: KVNamespace;
+    };
+    const student = await STUDENTS.get(String(data.studentId));
+    if (student) {
+      const studentData = JSON.parse(student);
+      if (studentData.courses.includes(data.course))
+        return {
+          ok: false,
+          message: "شما قبلا در این دوره ثبت نام کرده اید",
+        };
+      else {
+        delete data.course;
+        await STUDENTS.put(
+          String(data.studentId),
+          JSON.stringify({
+            ...data,
+            course: [...studentData.courses, data.couse],
+          })
+        );
+      }
+    } else {
+      await STUDENTS.put(String(data.studentId), JSON.stringify(data));
     }
-  } else {
-    await STUDENTS.put(String(data.studentId), JSON.stringify(data));
+    return {
+      ok: true,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      ok: false,
+    };
   }
-  return {
-    ok: true,
-  };
 });
 
 export default component$(() => {
@@ -61,15 +68,14 @@ export default component$(() => {
   const sexError = useSignal("");
   const phoneNumberError = useSignal("");
   const studentIdError = useSignal("");
+  const courseError = useSignal("");
   const course = useSignal("");
-  const loading = useSignal(false);
   const courses = useCourses();
   const addStudent = useAddStudent();
   const submitResponse = useSignal("");
   const submitError = useSignal("");
 
   const submit = $(async () => {
-    loading.value = true;
     try {
       if (firstName.value === "") firstNameError.value = "نام خود را وارد کنید";
       else if (!/^[\u0600-\u06FF\s]+$/.test(firstName.value))
@@ -91,6 +97,17 @@ export default component$(() => {
         phoneNumberError.value = "شماره موبایل وارد شده معتبر نیست";
       if (studentId.value.length < 8 || studentId.value.length > 16)
         studentIdError.value = "شماره دانشجویی وارد شده معتبر نیست";
+      if (course.value === "") courseError.value = "نام دوره را انتخاب کنید";
+
+      if (
+        firstNameError.value ||
+        lastNameError.value ||
+        phoneNumberError.value ||
+        studentIdError.value ||
+        courseError.value
+      )
+        return;
+
       const res = await addStudent.submit({
         firstName: firstName.value,
         lastName: lastName.value,
@@ -99,12 +116,11 @@ export default component$(() => {
         studentId: studentId.value,
         couuse: course.value,
       });
+      console.log(res.value)
       if (res.value.ok) submitResponse.value = "ثبت نام با موفقیت انجام شد";
       else submitError.value = res.value.message || "ثبت نام با خطا مواجه شد";
     } catch (error) {
       console.log(error);
-    } finally {
-      loading.value = false;
     }
   });
 
@@ -257,30 +273,43 @@ export default component$(() => {
                   bind:value={course}
                   name="couses"
                   id="courses"
-                  class="w-full appearance-none text-right focus:outline-blue-500 border-[#9a9a9a] border-[1px] rounded px-4 py-3"
+                  class={`${
+                    courseError.value
+                      ? "border-2 border-red-500"
+                      : "focus:outline-blue-500 border-[#9a9a9a] border-[1px]"
+                  } w-full appearance-none text-right rounded px-4 py-3`}
                 >
+                  <option value="">انتخاب کنید</option>
                   {courses.value.courses.map((c) => (
                     <option value={c.name}>{c.name}</option>
                   ))}
                 </select>
                 <span class="left-3 top-5 w-2 h-2 border-t-2 border-r-2 border-black rotate-[135deg] absolute"></span>
               </div>
-              {studentIdError.value && (
+              {courseError.value && (
                 <div class="text-red-500 text-[12px] pt-2">
-                  {studentIdError.value}
+                  {courseError.value}
                 </div>
               )}
             </div>
-            <div>
+            <div class="mb-8">
               <button
-                disabled={loading.value}
+                disabled={addStudent.isRunning}
                 onClick$={submit}
-                class="bg-[#0e8af2] mb-8 h-12 rounded text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9] w-full"
+                class="bg-[#0e8af2] h-12 rounded text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9] w-full"
               >
                 ثبت نام
               </button>
-              {submitError.value && <span class="text-red-500 text-[12px] pt-2">{submitError.value}</span>}
-              {submitResponse.value && <span class="text-green-500 text-[12px] pt-2">{submitResponse.value}</span>}
+              {submitError.value && (
+                <span class="text-red-500 text-[12px] pt-2">
+                  {submitError.value}
+                </span>
+              )}
+              {submitResponse.value && (
+                <span class="text-green-500 text-[12px] pt-2">
+                  {submitResponse.value}
+                </span>
+              )}
             </div>
           </div>
         </div>
