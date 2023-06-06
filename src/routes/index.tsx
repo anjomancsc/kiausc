@@ -39,7 +39,7 @@ export const useAddStudent = routeAction$(async (data, { platform }) => {
           String(data.studentId),
           JSON.stringify({
             ...data,
-            course: [...studentData.courses, data.couse],
+            courses: [...studentData.courses, data.course],
           })
         );
       }
@@ -113,6 +113,9 @@ export default component$(() => {
         courseError.value
       )
         return;
+
+      submitError.value = ""
+      submitResponse.value = ""
 
       const res = await addStudent.submit({
         firstName: firstName.value,
