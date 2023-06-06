@@ -82,22 +82,28 @@ export default component$(() => {
         firstNameError.value = "نام خود را به فارسی وارد کنید";
       else if (firstName.value.length < 3)
         firstNameError.value = "نام خانوادگی وارد شده کوتاه است";
+      else firstNameError.value = "";
       if (lastName.value === "")
         lastNameError.value = "نام خانوادگی خود را وارد کنید";
       else if (!/^[\u0600-\u06FF\s]+$/.test(lastName.value))
         lastNameError.value = "نام خانوادگی خود را به فارسی وارد کنید";
       else if (lastName.value.length < 3)
         lastNameError.value = "نام خانوادگی وارد شده کوتاه است";
+      else lastNameError.value = "";
       if (sex.value === "") sexError.value = "جنسیت خود را انتخاب کنید";
+      else sexError.value = "";
       if (
         phoneNumber.value.length != 11 ||
         phoneNumber.value[0] != "0" ||
         phoneNumber.value[1] != "9"
       )
         phoneNumberError.value = "شماره موبایل وارد شده معتبر نیست";
+      else phoneNumber.value = "";
       if (studentId.value.length < 8 || studentId.value.length > 16)
         studentIdError.value = "شماره دانشجویی وارد شده معتبر نیست";
+      else studentIdError.value = "";
       if (course.value === "") courseError.value = "نام دوره را انتخاب کنید";
+      else courseError.value = "";
 
       if (
         firstNameError.value ||
@@ -116,7 +122,7 @@ export default component$(() => {
         studentId: studentId.value,
         couuse: course.value,
       });
-      console.log(res.value)
+      console.log(res.value);
       if (res.value.ok) submitResponse.value = "ثبت نام با موفقیت انجام شد";
       else submitError.value = res.value.message || "ثبت نام با خطا مواجه شد";
     } catch (error) {
