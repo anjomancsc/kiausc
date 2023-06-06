@@ -140,8 +140,8 @@ export default component$(() => {
   });
 
   return (
-    <main class="w-full h-full grid gap-5 grid-cols-12 max-md:px-6">
-      <div class="relative col-span-6 max-md:hidden my-auto h-full md:overflow-hidden">
+    <main class="w-full h-full grid gap-5 grid-cols-12 max-md:px-6 md:pr-[120px] overflow-x-hidden">
+      <div class="relative col-span-6 max-md:hidden my-auto h-full">
         <span class="absolute top-0 left-0 z-10 text-white text-center w-full mt-16 text-lg">
           دوره های انجمن علمی دانشگاه آزاد اسلامی واحد کرمانشاه
         </span>
@@ -158,20 +158,21 @@ export default component$(() => {
         />
       </div>
       <div class="col-span-1 max-md:hidden" />
-      <div class="col-span-5 max-md:col-span-12 flex flex-col justify-between py-8 md:overflow-y-scroll md:overflow-x-hidden md:pr-[120px]">
+      <div class="col-span-5 max-md:col-span-12 flex flex-col justify-between py-8">
         <div class="mt-auto flex flex-col justify-center w-full text-right">
           <div class="text-[#222222] text-[24px] mb-4 font-bold">ثبت نام</div>
           <div class="text-[#707070] text-[12px] mb-10">
             .اطلاعات خود را برای ثبت نام در دوره وارد کنید
           </div>
           <div>
-            <div class="flex mb-8">
-              <div class="flex flex-col w-full">
+            <div class="flex flex-col md:flex-row md:mb-8">
+              <div class="flex flex-col w-full md:mb-0 mb-8">
                 <label for="last-name" class="mb-4 text-[#2b2b2b] text-[16px]">
                   <span class="text-red-500 pr-1">*</span>
                   نام خانوادگی
                 </label>
                 <input
+                  placeholder="محمدی"
                   onChange$={(e) => (lastName.value = e.target.value)}
                   type="text"
                   id="last-name"
@@ -187,13 +188,14 @@ export default component$(() => {
                   </div>
                 )}
               </div>
-              <div class="w-4"></div>
-              <div class="flex flex-col w-full">
+              <div class="w-4 hidden md:block"></div>
+              <div class="flex flex-col w-full md:mb-0 mb-8">
                 <label for="first-name" class="mb-4 text-[#2b2b2b] text-[16px]">
                   <span class="text-red-500 pr-1">*</span>
                   نام
                 </label>
                 <input
+                  placeholder="علی"
                   onChange$={(e) => (firstName.value = e.target.value)}
                   type="text"
                   id="first-name"
@@ -263,6 +265,7 @@ export default component$(() => {
                 شماره دانشجویی
               </label>
               <input
+                placeholder="992123456"
                 onChange$={(e) => (studentId.value = e.target.value)}
                 type="number"
                 id="student-id"
@@ -316,9 +319,7 @@ export default component$(() => {
                 ثبت نام
               </button>
               {submitError.value && (
-                <div class="text-red-500 text-xs mt-2">
-                  {submitError.value}
-                </div>
+                <div class="text-red-500 text-xs mt-2">{submitError.value}</div>
               )}
               {submitResponse.value && (
                 <div class="text-green-500 text-xs mt-2">

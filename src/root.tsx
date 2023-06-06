@@ -19,7 +19,7 @@ export default component$(() => {
         <link rel="manifest" href="/manifest.json" />
         <RouterHead />
       </head>
-      <body lang="en" class="h-[100vh] w-[100wv]">
+      <body lang="en" class="h-[100vh] w-[100vw]">
         <RouterOutlet />
       </body>
     </QwikCityProvider>
