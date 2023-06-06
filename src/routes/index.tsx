@@ -325,11 +325,6 @@ export default component$(() => {
               {submitError.value && (
                 <div class="text-red-500 text-xs mt-2">{submitError.value}</div>
               )}
-              {submitResponse.value && (
-                <div class="text-green-500 text-xs mt-2">
-                  {submitResponse.value}
-                </div>
-              )}
             </div>
           </div>
         </div>
