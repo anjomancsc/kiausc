@@ -79,7 +79,7 @@ export default component$(() => {
   const courses = useCourses();
   const addStudent = useAddStudent();
   const submitResponse = useSignal("");
-  const submitError = useSignal("");
+  const submitError = useSignal("test");
 
   const submit = $(async () => {
     try {
@@ -316,14 +316,14 @@ export default component$(() => {
                 ثبت نام
               </button>
               {submitError.value && (
-                <span class="text-red-500 mt-4 text-[14px]">
+                <div class="text-red-500 text-xs mt-2">
                   {submitError.value}
-                </span>
+                </div>
               )}
               {submitResponse.value && (
-                <span class="text-green-500 mt-4 text-[14px]">
+                <div class="text-green-500 text-xs mt-2">
                   {submitResponse.value}
-                </span>
+                </div>
               )}
             </div>
           </div>
