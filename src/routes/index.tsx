@@ -307,12 +307,12 @@ export default component$(() => {
                 ثبت نام
               </button>
               {submitError.value && (
-                <span class="text-red-500 text-[12px] pt-2">
+                <span class="text-red-500 pt-4">
                   {submitError.value}
                 </span>
               )}
               {submitResponse.value && (
-                <span class="text-green-500 text-[12px] pt-2">
+                <span class="text-green-500 pt-4">
                   {submitResponse.value}
                 </span>
               )}
