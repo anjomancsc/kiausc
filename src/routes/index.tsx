@@ -141,7 +141,7 @@ export default component$(() => {
 
   return (
     <main class="w-full h-full grid gap-5 grid-cols-12 max-md:px-6">
-      <div class="relative col-span-6 max-md:hidden my-auto h-full overflow-hidden">
+      <div class="relative col-span-6 max-md:hidden my-auto h-full md:overflow-hidden">
         <span class="absolute top-0 left-0 z-10 text-white text-center w-full mt-16 text-lg">
           دوره های انجمن علمی دانشگاه آزاد اسلامی واحد کرمانشاه
         </span>
