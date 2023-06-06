@@ -44,7 +44,12 @@ export const useAddStudent = routeAction$(async (data, { platform }) => {
         );
       }
     } else {
-      await STUDENTS.put(String(data.studentId), JSON.stringify(data));
+      const c = data.course;
+      delete data.course;
+      await STUDENTS.put(
+        String(data.studentId),
+        JSON.stringify({ ...data, courses: [c] })
+      );
     }
     return {
       ok: true,
@@ -114,8 +119,8 @@ export default component$(() => {
       )
         return;
 
-      submitError.value = ""
-      submitResponse.value = ""
+      submitError.value = "";
+      submitResponse.value = "";
 
       const res = await addStudent.submit({
         firstName: firstName.value,
