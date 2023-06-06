@@ -17,6 +17,7 @@ export default component$(() => {
       <head>
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
         <RouterHead />
       </head>
       <body lang="en" class="h-[100vh] w-[100vw] box-border">

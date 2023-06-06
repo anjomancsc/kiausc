@@ -188,7 +188,7 @@ export default component$(() => {
                   </div>
                 )}
               </div>
-                <div class="w-5 hidden md:block"></div>
+              <div class="w-5 hidden md:block"></div>
               <div class="flex flex-col w-full md:mb-0 mb-8">
                 <label for="last-name" class="mb-4 text-[#2b2b2b] text-[16px]">
                   <span class="text-red-500 pr-1">*</span>
@@ -297,9 +297,13 @@ export default component$(() => {
                       : "focus:outline-blue-500 border-[#9a9a9a] border-[1px]"
                   } w-full appearance-none text-right rounded px-4 h-[48px]`}
                 >
-                  <option value="" class="hover:bg-[#838383]">...انتخاب کنید</option>
+                  <option value="" class="hover:bg-[#838383]">
+                    ...انتخاب کنید
+                  </option>
                   {courses.value.courses.map((c) => (
-                    <option value={c.name} class="hover:bg-[#838383]">{c.name}</option>
+                    <option value={c.name} class="hover:bg-[#838383]">
+                      {c.name}
+                    </option>
                   ))}
                 </select>
                 <span class="left-3 top-5 w-2 h-2 border-t-2 border-r-2 border-black rotate-[135deg] absolute"></span>
@@ -332,6 +336,29 @@ export default component$(() => {
         <div class="mt-auto mb-10 pt-6 flex justify-center">
           <div class="ss02 pr-6">09025984217</div>
           <div>تلفن پشتیبانی</div>
+        </div>
+      </div>
+      <div
+        class={`${
+          submitResponse.value ? "block" : "hidden"
+        } absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full`}
+      >
+        <div class="w-[400px] h-[400px] rounded-3xl bg-white shadow-2xl flex flex-col items-center justify-center">
+          <lottie-player
+            autoplay
+            id="success-animation"
+            src="https://assets4.lottiefiles.com/packages/lf20_wcnjmdp1.json"
+            class="w-[116px] h-[116px]"
+          ></lottie-player>
+          <div class="text-[#2b2b2b] text-[24px] font-bold">
+            !ثبت نام با موفقیت انجام شد
+          </div>
+          <button
+            onClick$={() => (submitResponse.value = "")}
+            class="bg-[#0e8af2] h-12 rounded mt-8 w-24 text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9]"
+          >
+            !بزن بریم
+          </button>
         </div>
       </div>
     </main>
