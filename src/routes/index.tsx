@@ -22,39 +22,43 @@ export const useCourses = routeLoader$(async ({ platform }) => {
 
 export const useAddStudent = routeAction$(async (data, { platform }) => {
   try {
-    const { STUDENTS } = platform.env as {
-      STUDENTS: KVNamespace;
-    };
-    const student = await STUDENTS.get(String(data.studentId));
-    if (student) {
-      const studentData = JSON.parse(student);
-      if (studentData.courses.includes(data.course))
-        return {
-          ok: false,
-          message: "شما قبلا در این دوره ثبت نام کرده اید",
-        };
-      else {
+    if (platform.env) {
+      const { STUDENTS } = platform.env as {
+        STUDENTS: KVNamespace;
+      };
+      const student = await STUDENTS.get(String(data.studentId));
+      if (student) {
+        const studentData = JSON.parse(student);
+        if (studentData.courses.includes(data.course))
+          return {
+            ok: false,
+            message: "شما قبلا در این دوره ثبت نام کرده اید",
+          };
+        else {
+          const c = data.course;
+          delete data.course;
+          await STUDENTS.put(
+            String(data.studentId),
+            JSON.stringify({
+              ...data,
+              courses: [...studentData.courses, c],
+            })
+          );
+        }
+      } else {
         const c = data.course;
         delete data.course;
         await STUDENTS.put(
           String(data.studentId),
-          JSON.stringify({
-            ...data,
-            courses: [...studentData.courses, c],
-          })
+          JSON.stringify({ ...data, courses: [c] })
         );
       }
+      return {
+        ok: true,
+      };
     } else {
-      const c = data.course;
-      delete data.course;
-      await STUDENTS.put(
-        String(data.studentId),
-        JSON.stringify({ ...data, courses: [c] })
-      );
+      return { ok: true };
     }
-    return {
-      ok: true,
-    };
   } catch (error) {
     console.log(error);
     return {
@@ -132,8 +136,15 @@ export default component$(() => {
         course: course.value,
       });
       console.log(res.value);
-      if (res.value.ok) submitResponse.value = "ثبت نام با موفقیت انجام شد";
-      else submitError.value = res.value.message || "ثبت نام با خطا مواجه شد";
+      if (res.value.ok) {
+        submitResponse.value = "ثبت نام با موفقیت انجام شد";
+        const player = document.querySelector("lottie-player");
+        if (player) {
+          (player as any).load(
+            "https://assets4.lottiefiles.com/packages/lf20_wcnjmdp1.json"
+          );
+        }
+      } else submitError.value = res.value.message || "ثبت نام با خطا مواجه شد";
     } catch (error) {
       console.log(error);
     }
@@ -318,9 +329,13 @@ export default component$(() => {
               <button
                 disabled={addStudent.isRunning}
                 onClick$={submit}
-                class="bg-[#0e8af2] h-12 rounded text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9] w-full"
+                class="bg-[#0e8af2] h-12 rounded text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9] w-full flex justify-center items-center"
               >
-                ثبت نام
+                {!addStudent.isRunning ? (
+                  <div class="rounded-full w-8 h-8 border-white border-b-2 animate-spin"></div>
+                ) : (
+                  <div>ثبت نام</div>
+                )}
               </button>
               {submitError.value && (
                 <div class="text-red-500 text-xs mt-2">{submitError.value}</div>
@@ -336,13 +351,12 @@ export default component$(() => {
       <div
         class={`${
           submitResponse.value ? "block" : "hidden"
-        } absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full`}
+        } absolute top-0 left-0 z-20 flex items-center justify-center w-full h-full bg-black bg-opacity-75`}
       >
-        <div class="w-[400px] h-[400px] rounded-3xl bg-white shadow-2xl flex flex-col items-center justify-center">
+        <div class="mx-6 w-[400px] h-[400px] rounded-3xl bg-white shadow-2xl flex flex-col items-center justify-center">
           <lottie-player
             autoplay
             id="success-animation"
-            src="https://assets4.lottiefiles.com/packages/lf20_wcnjmdp1.json"
             class="w-[116px] h-[116px]"
           ></lottie-player>
           <div class="text-[#2b2b2b] text-[24px] font-bold">
@@ -352,7 +366,7 @@ export default component$(() => {
             onClick$={() => (submitResponse.value = "")}
             class="bg-[#0e8af2] h-12 rounded mt-8 w-24 text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9]"
           >
-            !بزن بریم
+            بستن
           </button>
         </div>
       </div>
