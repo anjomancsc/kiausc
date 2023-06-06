@@ -331,7 +331,7 @@ export default component$(() => {
                 onClick$={submit}
                 class="bg-[#0e8af2] h-12 rounded text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9] w-full flex justify-center items-center"
               >
-                {!addStudent.isRunning ? (
+                {addStudent.isRunning ? (
                   <div class="rounded-full w-8 h-8 border-white border-b-2 animate-spin"></div>
                 ) : (
                   <div>ثبت نام</div>
