@@ -98,7 +98,7 @@ export default component$(() => {
         phoneNumber.value[1] != "9"
       )
         phoneNumberError.value = "شماره موبایل وارد شده معتبر نیست";
-      else phoneNumber.value = "";
+      else phoneNumberError.value = "";
       if (studentId.value.length < 8 || studentId.value.length > 16)
         studentIdError.value = "شماره دانشجویی وارد شده معتبر نیست";
       else studentIdError.value = "";
