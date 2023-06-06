@@ -34,12 +34,13 @@ export const useAddStudent = routeAction$(async (data, { platform }) => {
           message: "شما قبلا در این دوره ثبت نام کرده اید",
         };
       else {
+        const c = data.course;
         delete data.course;
         await STUDENTS.put(
           String(data.studentId),
           JSON.stringify({
             ...data,
-            courses: [...studentData.courses, data.course],
+            courses: [...studentData.courses, c],
           })
         );
       }
@@ -315,12 +316,12 @@ export default component$(() => {
                 ثبت نام
               </button>
               {submitError.value && (
-                <span class="text-red-500 mt-2 text-[12px]">
+                <span class="text-red-500 mt-4 text-[14px]">
                   {submitError.value}
                 </span>
               )}
               {submitResponse.value && (
-                <span class="text-green-500 mt-2 text-[12px]">
+                <span class="text-green-500 mt-4 text-[14px]">
                   {submitResponse.value}
                 </span>
               )}
