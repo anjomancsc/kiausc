@@ -26,13 +26,28 @@ export const useAddStudent = routeAction$(async (data, { platform }) => {
   };
   const student = await STUDENTS.get(String(data.studentId));
   if (student) {
-    return {
-      ok: false,
-      message: "duplicate student id",
-    };
+    const studentData = JSON.parse(student);
+    if (studentData.courses.includes(data.course))
+      return {
+        ok: false,
+        message: "شما قبلا در این دوره ثبت نام کرده اید",
+      };
+    else {
+      delete data.course;
+      await STUDENTS.put(
+        String(data.studentId),
+        JSON.stringify({
+          ...data,
+          course: [...studentData.courses, data.couse],
+        })
+      );
+    }
   } else {
     await STUDENTS.put(String(data.studentId), JSON.stringify(data));
   }
+  return {
+    ok: true,
+  };
 });
 
 export default component$(() => {
@@ -50,6 +65,8 @@ export default component$(() => {
   const loading = useSignal(false);
   const courses = useCourses();
   const addStudent = useAddStudent();
+  const submitResponse = useSignal("");
+  const submitError = useSignal("");
 
   const submit = $(async () => {
     loading.value = true;
@@ -82,7 +99,8 @@ export default component$(() => {
         studentId: studentId.value,
         couuse: course.value,
       });
-      console.log(res);
+      if (res.value.ok) submitResponse.value = "ثبت نام با موفقیت انجام شد";
+      else submitError.value = res.value.message || "ثبت نام با خطا مواجه شد";
     } catch (error) {
       console.log(error);
     } finally {
@@ -93,7 +111,9 @@ export default component$(() => {
   return (
     <main class="w-full h-full grid gap-5 grid-cols-12 max-md:px-6">
       <div class="relative col-span-6 max-md:hidden my-auto h-full overflow-hidden">
-        <span class="absolute top-0 left-0 z-10 text-white text-center w-full mt-16 text-lg">دوره های انجمن علمی دانشگاه آزاد اسلامی واحد کرمانشاه</span>
+        <span class="absolute top-0 left-0 z-10 text-white text-center w-full mt-16 text-lg">
+          دوره های انجمن علمی دانشگاه آزاد اسلامی واحد کرمانشاه
+        </span>
         <img
           id="laptop"
           src="/bg.jpg"
@@ -251,13 +271,17 @@ export default component$(() => {
                 </div>
               )}
             </div>
-            <button
-              disabled={loading.value}
-              onClick$={submit}
-              class="bg-[#0e8af2] mb-8 h-12 rounded text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9] w-full"
-            >
-              ثبت نام
-            </button>
+            <div>
+              <button
+                disabled={loading.value}
+                onClick$={submit}
+                class="bg-[#0e8af2] mb-8 h-12 rounded text-white transition-colors font-bold text-[18px] hover:bg-[#006dc9] w-full"
+              >
+                ثبت نام
+              </button>
+              {submitError.value && <span class="text-red-500 text-[12px] pt-2">{submitError.value}</span>}
+              {submitResponse.value && <span class="text-green-500 text-[12px] pt-2">{submitResponse.value}</span>}
+            </div>
           </div>
         </div>
         <div class="mt-auto mb-10 pt-6 flex justify-center">
