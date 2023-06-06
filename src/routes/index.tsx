@@ -165,30 +165,7 @@ export default component$(() => {
             .اطلاعات خود را برای ثبت نام در دوره وارد کنید
           </div>
           <div>
-            <div class="flex flex-col md:flex-row md:mb-8">
-              <div class="flex flex-col w-full md:mb-0 mb-8">
-                <label for="last-name" class="mb-4 text-[#2b2b2b] text-[16px]">
-                  <span class="text-red-500 pr-1">*</span>
-                  نام خانوادگی
-                </label>
-                <input
-                  placeholder="محمدی"
-                  onChange$={(e) => (lastName.value = e.target.value)}
-                  type="text"
-                  id="last-name"
-                  class={`${
-                    lastNameError.value
-                      ? "border-[#c30000] border-2"
-                      : "border-[#9a9a9a] border-[1px]"
-                  } rounded px-4 py-3 focus:outline-[#0e8af2] w-full`}
-                />
-                {lastNameError.value && (
-                  <div class="text-red-500 text-[12px] pt-2">
-                    {lastNameError.value}
-                  </div>
-                )}
-              </div>
-              <div class="w-4 hidden md:block"></div>
+            <div class="flex flex-col md:flex-row-reverse md:mb-8">
               <div class="flex flex-col w-full md:mb-0 mb-8">
                 <label for="first-name" class="mb-4 text-[#2b2b2b] text-[16px]">
                   <span class="text-red-500 pr-1">*</span>
@@ -203,11 +180,34 @@ export default component$(() => {
                     firstNameError.value
                       ? "border-[#c30000] border-2"
                       : "border-[#9a9a9a] border-[1px]"
-                  } rounded px-4 py-3 focus:outline-[#0e8af2] w-full`}
+                  } rounded px-4 h-[48px] focus:outline-[#0e8af2] w-full`}
                 />
                 {firstNameError.value && (
                   <div class="text-red-500 text-[12px] pt-2">
                     {firstNameError.value}
+                  </div>
+                )}
+              </div>
+                <div class="w-5 hidden md:block"></div>
+              <div class="flex flex-col w-full md:mb-0 mb-8">
+                <label for="last-name" class="mb-4 text-[#2b2b2b] text-[16px]">
+                  <span class="text-red-500 pr-1">*</span>
+                  نام خانوادگی
+                </label>
+                <input
+                  placeholder="محمدی"
+                  onChange$={(e) => (lastName.value = e.target.value)}
+                  type="text"
+                  id="last-name"
+                  class={`${
+                    lastNameError.value
+                      ? "border-[#c30000] border-2"
+                      : "border-[#9a9a9a] border-[1px]"
+                  } rounded px-4 h-[48px] focus:outline-[#0e8af2] w-full`}
+                />
+                {lastNameError.value && (
+                  <div class="text-red-500 text-[12px] pt-2">
+                    {lastNameError.value}
                   </div>
                 )}
               </div>
@@ -251,7 +251,7 @@ export default component$(() => {
                   phoneNumberError.value
                     ? "border-[#c30000] border-2"
                     : "border-[#9a9a9a] border-[1px]"
-                } rounded px-4 py-3 ss02 focus:outline-[#0e8af2]`}
+                } rounded px-4 h-[48px] ss02 focus:outline-[#0e8af2]`}
               />
               {phoneNumberError.value && (
                 <div class="text-red-500 text-[12px] pt-2">
@@ -273,7 +273,7 @@ export default component$(() => {
                   studentIdError.value
                     ? "border-[#c30000] border-2"
                     : "border-[#9a9a9a] border-[1px]"
-                } rounded px-4 py-3 ss02 focus:outline-[#0e8af2]`}
+                } rounded px-4 h-[48px] ss02 focus:outline-[#0e8af2]`}
               />
               {studentIdError.value && (
                 <div class="text-red-500 text-[12px] pt-2">
@@ -295,11 +295,11 @@ export default component$(() => {
                     courseError.value
                       ? "border-2 border-red-500"
                       : "focus:outline-blue-500 border-[#9a9a9a] border-[1px]"
-                  } w-full appearance-none text-right rounded px-4 py-3`}
+                  } w-full appearance-none text-right rounded px-4 h-[48px]`}
                 >
-                  <option value="">انتخاب کنید</option>
+                  <option value="" class="hover:bg-[#838383]">...انتخاب کنید</option>
                   {courses.value.courses.map((c) => (
-                    <option value={c.name}>{c.name}</option>
+                    <option value={c.name} class="hover:bg-[#838383]">{c.name}</option>
                   ))}
                 </select>
                 <span class="left-3 top-5 w-2 h-2 border-t-2 border-r-2 border-black rotate-[135deg] absolute"></span>
